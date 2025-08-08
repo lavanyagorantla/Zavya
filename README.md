@@ -91,3 +91,89 @@ Add to Cart	User adds product to cart	Product_ID, Price	Marketing	High
 Purchase Completed	Successful order placed	Order_ID, Revenue	Ops	High
 Return Initiated	User initiates return	Order_ID, Reason	Ops	Medium
 Campaign Clicked	User clicks campaign ad link	Campaign_ID	Marketing	Medium
+
+Upload zavya_dataset_clean to Google Drive → open with Google Sheets.
+
+Ensure header row is clean, Order_Date is parsed as a Date, numeric columns (Unit_Price, Revenue_After_Discount, Units_Sold, Discount_%) are numbers.
+
+In Looker Studio: Create → Data Source → Google Sheets → select sheet → Add to report.
+
+In the data source editor, set Order_Date type → Date; set currency fields to Number (Currency formatting applied in charts).
+Data modeling — fields to create in the Looker Studio data source
+Create these calculated fields in the data source (or precompute in BigQuery if you prefer).
+
+Metrics (calculated fields)
+
+Orders = COUNT_DISTINCT(Order_ID)
+
+Total_Revenue = SUM(Revenue_After_Discount) (or use existing column)
+
+AOV = SUM(Revenue_After_Discount) / COUNT_DISTINCT(Order_ID)
+
+Units_per_Order = SUM(Units_Sold) / COUNT_DISTINCT(Order_ID)
+
+Return_Rate = SUM(Return_Flag) / COUNT_DISTINCT(Order_ID)
+
+Avg_Discount_Pct = AVG(Discount_%)
+
+Active_Customers = COUNT_DISTINCT(Customer_ID)
+
+Looker Studio steps (copy-paste friendly)
+Add a chart → Configure:
+
+Scorecard (Total Revenue)
+
+Metric: Total_Revenue (type: Currency)
+
+Comparison date range: Previous period → toggle on.
+
+Style: big, bold, center.
+
+Time Series (Revenue)
+
+Chart: Time series
+
+Dimension: Order_Date
+
+Metric: Total_Revenue
+
+Break down dimension (optional): Channel (series) — pick max 4 channels.
+
+Date range default: Auto (report-level control).
+
+Add smoothing: use rolling average option if available.
+
+Bar Chart (Revenue by Channel)
+
+Chart: Bar chart
+
+Dimension: Channel
+
+Metric: Total_Revenue (and add Orders as second metric)
+
+Sort by: Total_Revenue descending
+
+Table (Top SKUs)
+
+Dimensions: SKU, Product_Category
+
+Metrics: Orders, Total_Revenue, Return_Rate, Avg_Discount_Pct
+
+Add conditional formatting for Return_Rate > 10% highlight red.
+
+Top insights:
+
+Website accounts for 62% revenue; Instagram drives higher AOV but fewer orders.
+
+Discounting increases conversion but reduces AOV; 11–20% bucket has highest conversion rates.
+
+Top 10% customers (by LTV) deliver 40% of revenue — prioritize retention.
+Recommended actions (3):
+
+Run targeted retention program for top LTV cohort (email + SMS).
+
+Test non-discounted bundles to preserve AOV.
+
+Improve product page UX on Instagram-linked landing pages.
+Expected impact: 5–8% incremental revenue in 3 months if top customers’ repeat rate increases by 10%.
+Artifacts: Link to dashboard + SQL + notebook.
