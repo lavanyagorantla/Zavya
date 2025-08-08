@@ -177,3 +177,19 @@ Test non-discounted bundles to preserve AOV.
 Improve product page UX on Instagram-linked landing pages.
 Expected impact: 5–8% incremental revenue in 3 months if top customers’ repeat rate increases by 10%.
 Artifacts: Link to dashboard + SQL + notebook.
+Steps in Analysis
+Data Cleaning (remove nulls, parse dates, create derived metrics like Revenue_After_Discount).
+
+Exploratory Data Analysis (top products, channels, regions, campaigns).
+
+Feature Engineering (RFM, LTV, discount bins, repeat purchase flag).
+
+KPI Development (Revenue, AOV, Return %, Channel Share).
+
+SQL Queries for BigQuery analytics.
+
+Looker Studio Dashboard (KPIs, trends, distribution charts).
+
+Amplitude Event Setup (customer actions, funnel tracking).
+
+Recommendations (growth, product, ops, marketing).
